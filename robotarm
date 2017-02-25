@@ -1,0 +1,123 @@
+
+#include <Servo.h> // include server library
+
+Servo ser3;
+Servo ser4;// create servo object to control a servo
+Servo ser5;
+Servo ser6;
+Servo ser7;
+Servo ser8;
+int poser = 0; // initial position of server
+
+char val;
+void setup() {
+
+Serial.begin(9600); // Serial comm begin at 9600bps
+
+ser3.attach(3);// server is connected at pin 3
+
+
+
+ser4.attach(4);
+ser5.attach(5);
+ser6.attach(6);
+ser7.attach(7);
+ser8.attach(8);
+}
+
+void loop()
+{
+
+
+
+// then read the serial value
+val = Serial.read();
+if (val == 'q') //if value input is equals to d
+{
+
+ser3.write(180);
+Serial.println("q");
+
+
+}
+
+//delay for the servo to get to the position
+
+
+
+if (val == 'w') //if value input is equals to m
+{
+
+ser3.write(0);
+Serial.println("w");
+}
+
+
+if(val == 'a'){
+
+  ser4.write(0);
+  Serial.println('a');
+ }
+
+if(val == 'd'){
+
+  ser4.write(180);
+  Serial.println('d');
+  }
+
+if(val == 'x'){
+
+  ser5.write(0);
+  Serial.println('x');
+ }
+
+if(val == 'z'){
+
+  ser5.write(180);
+  Serial.println('z');
+  }
+
+
+ if(val == 'r'){
+
+  ser6.write(0);
+  Serial.println('r');
+ }
+
+if(val == 't'){
+
+  ser6.write(180);
+  Serial.println('t');
+  }
+
+ if(val == 'y'){
+
+  ser7.write(0);
+  Serial.println('y');
+ }
+
+if(val == 'u'){
+
+  ser7.write(180);
+  Serial.println('u');
+  }
+
+  if(val == 'o'){
+
+  ser8.write(0);
+  Serial.println('o');
+ }
+
+if(val == 'p'){
+
+  ser8.write(180);
+  Serial.println('p');
+  }
+delay(20);
+ //than position of servo motor decreases by 1 (clockwise)
+
+
+
+
+}
+
