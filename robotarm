@@ -1,4 +1,3 @@
-
 #include <Servo.h> // include server library
 
 Servo ser3;
@@ -7,22 +6,44 @@ Servo ser5;
 Servo ser6;
 Servo ser7;
 Servo ser8;
+
 int poser = 0; // initial position of server
+int ser3p = 0;
+int ser4p = 0;
+int ser5p = 0;
+int ser6p = 0;
+int ser7p = 0;
+int ser8p = 0; 
+
+boolean ser3t = true;
+boolean ser4t = true;
+boolean ser5t = true;
+boolean ser6t = true;
+boolean ser7t = true;
+boolean ser8t = true; 
+
+
+int positions[] = {ser3p, ser4p, ser5p, ser6p, ser7p, ser8p};
+boolean states[] = {ser3t, ser4t, ser5t, ser6t, ser7t, ser8t};
 
 char val;
+String nameOf; 
 void setup() {
 
 Serial.begin(9600); // Serial comm begin at 9600bps
 
 ser3.attach(3);// server is connected at pin 3
-
-
-
+ser3.write(0);
 ser4.attach(4);
 ser5.attach(5);
 ser6.attach(6);
 ser7.attach(7);
 ser8.attach(8);
+ser4.write(0);
+ser5.write(0);
+ser6.write(0);
+ser7.write(0);
+ser8.write(0);
 }
 
 void loop()
@@ -32,14 +53,36 @@ void loop()
 
 // then read the serial value
 val = Serial.read();
-if (val == 'q') //if value input is equals to d
+if(val == 'q') //if value input is equals to d
 {
 
-ser3.write(180);
+/*if(ser3t == true)
+  
+{ser3p+=15;
+
+ser3.write(ser3p);
 Serial.println("q");
+Serial.println(ser3p);
+
+}*/
+ifUp(0, ser3, 'q');
 
 
 }
+
+/*if(positions[0] == 75)
+{
+  states[0] = false;
+
+  
+  }
+else
+{
+  states[0] = true;
+  }
+*/
+
+changeStates(0, 75); 
 
 //delay for the servo to get to the position
 
@@ -48,71 +91,83 @@ Serial.println("q");
 if (val == 'w') //if value input is equals to m
 {
 
-ser3.write(0);
+/*positions[0]-=15;
+ser3.write(positions[0]);
+
 Serial.println("w");
+Serial.println(positions[0]); */
+
+ifDown(0, ser3, 'w'); 
 }
+
+isNeg(0); 
 
 
 if(val == 'a'){
 
-  ser4.write(0);
-  Serial.println('a');
+  ifUp(1, ser4, 'a'); 
  }
 
+changeStates(1, 180); 
 if(val == 'd'){
 
-  ser4.write(180);
-  Serial.println('d');
+ ifDown(1, ser4, 'd'); 
   }
 
+isNeg(1); 
 if(val == 'x'){
 
-  ser5.write(0);
-  Serial.println('x');
+ ifDown(2, ser5, 'x');
  }
 
+ changeStates(2, 180); 
 if(val == 'z'){
 
-  ser5.write(180);
-  Serial.println('z');
+ifUp(2, ser5, 'z');
   }
 
+isNeg(2); 
 
  if(val == 'r'){
 
-  ser6.write(0);
-  Serial.println('r');
+  ifUp(3, ser6, 'r'); 
  }
 
+changeStates(3, 165); 
 if(val == 't'){
 
-  ser6.write(180);
-  Serial.println('t');
+  ifDown(3, ser6, 't');
+
+  
   }
 
+isNeg(3); 
  if(val == 'y'){
 
-  ser7.write(0);
-  Serial.println('y');
+  ifUp(4, ser7, 'y');
  }
+
+changeStates(4, 180); 
 
 if(val == 'u'){
 
-  ser7.write(180);
-  Serial.println('u');
+ ifDown(4, ser7, 'u'); 
   }
 
+isNeg(4); 
   if(val == 'o'){
 
-  ser8.write(0);
-  Serial.println('o');
+  ifUp(5, ser8, 'o');
+  
  }
 
+changeStates(5, 180); 
 if(val == 'p'){
 
-  ser8.write(180);
-  Serial.println('p');
+  ifDown(5, ser8, 'p'); 
   }
+
+ isNeg(5); 
 delay(20);
  //than position of servo motor decreases by 1 (clockwise)
 
@@ -120,4 +175,50 @@ delay(20);
 
 
 }
+ void ifUp(int num, Servo servo, char chara ){
 
+if(states[num] == true)
+  
+{positions[num]+=15;
+
+servo.write(positions[num]);
+Serial.println(chara);
+Serial.println(positions[num]);
+
+
+}
+
+
+  
+  }
+
+  void ifDown(int num, Servo servo, char chara ){
+
+  positions[num]-=15;
+
+servo.write(positions[num]);
+Serial.println(chara);
+Serial.println(positions[num]);
+  }
+
+ void changeStates(int num, int highBound){
+
+  if(positions[num] == highBound)
+{
+  states[num] = false;
+
+  
+  }
+else
+{
+  states[num] = true;
+  }
+  }
+
+void isNeg(int num)
+{
+  if(positions[num] < 0)
+  {
+    positions[num] = 0;
+    }
+  }
